@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Lesson Generator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+
+<body class="quiz">
+  <nav class="navbar bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">Lesson Generator</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="col-sm-8 mx-auto">
+      <h1>
+        <span><%= quizTitle %></span>
+        <button type="button" class="btn btn-primary float-right js-quiz-btn">Submit Quiz</button>
+      </h1>
+      <% for (var i=0; i < questions.length; i++) { %>
+        <% var question = questions[i] %>
+        <div class="question">
+          <%= i + 1 %>. <%= question.question %>
+          <% for (var j=0; j < question.options.length; j++) { %>
+            <div class="option">
+              <input type="radio" name="question<%=i%>" value=<%=j%>> <%= question.options[j] %>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+</body>
+</html>

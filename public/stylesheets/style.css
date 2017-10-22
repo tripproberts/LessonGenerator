@@ -1,8 +1,69 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+body.search {
+  height: 100%;
+  display:flex;
+  align-items:center;
+  background-color: #343a40!important;
+  text-shadow: 0 0.05rem 0.1rem rgba(0,0,0,.5);
+  color: white;
 }
 
-a {
-  color: #00B7FF;
+.search-container .align-self-center {
+  margin-top: -15%;
+}
+
+.search-container h1 {
+  margin-bottom: 30px;
+}
+
+.search-btn, .btn {
+  cursor: pointer;
+}
+
+.search-btn .octicon-search {
+  color: white;
+}
+
+.search-container input {
+  border: 1px solid rgba(255,255,255,1);
+}
+
+nav .navbar-brand {
+  color: white;
+}
+
+nav .navbar-brand:hover {
+  color: white;
+}
+
+main {
+  padding-top: 50px;
+}
+
+main h1 {
+  margin-bottom: 20px;
+}
+
+.lesson main a {
+  color: white;
+}
+
+.lesson main a:hover {
+  text-decoration: none;
+}
+
+.lesson main h1, .quiz .main h1 {
+    text-transform: capitalize;
+}
+
+.lesson main .lesson-text {
+  margin-bottom: 20px;
+}
+
+.quiz .option {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.quiz .question {
+  margin-bottom: 20px;
 }
