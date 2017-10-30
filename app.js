@@ -1,11 +1,11 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
-var app = express();
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    LessonGenerator = require('./models/LessonGenerator'),
+    app = express();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -22,16 +22,13 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/lesson', function(req, res, next) {
-  var lessonHtml = `
-    <p><strong>Linear algebra</strong> is the branch of mathematics concerning vector spaces and linear mappings between such spaces. It includes the study of lines, planes, and subspaces, but is also concerned with properties common to all vector spaces.</p>
-    <p>The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space. The conditions under which a set of n hyperplanes intersect in a single point is an important focus of study in linear algebra. Such an investigation is initially motivated by a system of linear equations containing several unknowns. Such equations are naturally represented using the formalism of matrices and vectors.</p>
-    <p>Linear algebra is central to both pure and applied mathematics. For instance, abstract algebra arises by relaxing the axioms of a vector space, leading to a number of generalizations. Functional analysis studies the infinite-dimensional version of the theory of vector spaces. Combined with calculus, linear algebra facilitates the solution of linear systems of differential equations.</p>
-    <p>Techniques from linear algebra are also used in analytic geometry, engineering, physics, natural sciences, computer science, computer animation, advanced facial recognition algorithms and the social sciences (particularly in economics). Because linear algebra is such a well-developed theory, nonlinear mathematical models are sometimes approximated by linear models.</p>
-  `;
-  res.render('lesson', {
-    topic: req.query.q,
-    lessonHtml: lessonHtml,
-    videoLink: "https://www.youtube.com/embed/ZK3O402wf1c"
+  var query = req.query.q;
+  new LessonGenerator().getText(query).then(content => {
+    res.render('lesson', {
+      topic: query,
+      lessonHtml: content,
+      videoLink: "https://www.youtube.com/embed/ZK3O402wf1c"
+    });
   });
 });
 
