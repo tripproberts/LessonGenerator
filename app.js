@@ -22,12 +22,15 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/lesson', function(req, res, next) {
-  var query = req.query.q;
-  new LessonGenerator().getText(query).then(content => {
-    res.render('lesson', {
-      topic: query,
-      lessonHtml: content,
-      videoLink: "https://www.youtube.com/embed/ZK3O402wf1c"
+  var query = req.query.q,
+      lessonGenerator = new LessonGenerator(query);
+  lessonGenerator.getVideoUrl(function(url) {
+    lessonGenerator.getText().then(content => {
+      res.render('lesson', {
+        topic: query,
+        lessonHtml: content,
+        videoLink: url
+      });
     });
   });
 });

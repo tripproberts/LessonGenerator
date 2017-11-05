@@ -1,14 +1,21 @@
 var wiki = require('wikijs').default,
+    YouTube = require('youtube-node'),
     cheerio = require('cheerio');
 
-function LessonGenerator() {};
+function LessonGenerator(userQuery) {
+  this.userQuery = userQuery;
+};
 
 LessonGenerator.DISAMBIGUATION_CATEGORY = 'Category:All disambiguation pages';
+LessonGenerator.YOUTUBE = new YouTube();
+LessonGenerator.YOUTUBE_KEY = process.env.LESSON_GEN_YOUTUBE_KEY;
+LessonGenerator.YOUTUBE.setKey(LessonGenerator.YOUTUBE_KEY);
+LessonGenerator.YOUTUBE_URL_PREFIX = "https://www.youtube.com/embed/";
 
-LessonGenerator.prototype.getText = function(userQuery) {
+LessonGenerator.prototype.getText = function() {
   var self = this;
 
-  return wiki().page(userQuery).then(self.getContentFromPage);
+  return wiki().page(this.userQuery).then(self.getContentFromPage);
 };
 
 LessonGenerator.prototype.getContentFromPage = function(page) {
@@ -32,6 +39,12 @@ LessonGenerator.prototype.getContentFromPage = function(page) {
         });
       };
     });
+};
+
+LessonGenerator.prototype.getVideoUrl = function(callback) {
+  LessonGenerator.YOUTUBE.search(this.userQuery, 5, function(error, result) {
+    callback(LessonGenerator.YOUTUBE_URL_PREFIX + result.items[0].id.videoId);
+  });
 };
 
 module.exports = LessonGenerator;
