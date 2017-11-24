@@ -21,7 +21,7 @@
     <div class="col-sm-8 mx-auto">
       <h1>
         <span><%= quizTitle %></span>
-        <button type="button" class="btn btn-primary float-right js-quiz-btn">Submit Quiz</button>
+        <button type="button" class="btn btn-primary float-right js-submit-btn">Submit Quiz</button>
       </h1>
       <% for (var i=0; i < questions.length; i++) { %>
         <% var question = questions[i] %>
@@ -36,5 +36,17 @@
       <% } %>
     </div>
   </main>
+  <script type="text/javascript" charset="utf-8">
+    var questions = <%-JSON.stringify(questions)%>;
+    $('.js-submit-btn').on('click', function() {
+      var correct = 0;
+      questions.forEach(function(question, i) {
+        if (question.answerIndex == $('input[name=question' + i + ']:checked').val()) {
+          correct = correct + 1;
+        }
+      });
+      alert('Correct: ' + correct);
+    });
+  </script>
 </body>
 </html>
