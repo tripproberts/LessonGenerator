@@ -8,7 +8,6 @@ function QuestionGenerator(query, lessonContent) {
 };
 
 QuestionGenerator.WORD_BLACKLIST = ['displaystyle'];
-QuestionGenerator.SENTENCE_DELIMITERS = '.';
 
 QuestionGenerator.prototype.getMultipleChoiceQuestions = function(limit) {
   var self = this,
@@ -58,14 +57,14 @@ QuestionGenerator.prototype.getTrueFalseQuestions = function(limit) {
 };
 
 QuestionGenerator.prototype._getSentenceWithWord = function(word) {
-  var sentences = this.lessonContent.split(QuestionGenerator.SENTENCE_DELIMITERS),
+  var sentences = this.lessonContent.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|"),
       options = [];
   sentences.forEach(function(sentence) {
     if (sentence.includes(word) && !QuestionGenerator.WORD_BLACKLIST.some(function(w) { return sentence.includes(w) })) {
       options.push(sentence);
     }
   });
-  return options[Math.floor(Math.random() * options.length)].trim() + '.';
+  return options[Math.floor(Math.random() * options.length)].trim();
 };
 
 QuestionGenerator.prototype._getImportantWords = function() {
