@@ -17,9 +17,10 @@ QuestionGenerator.prototype.getMultipleChoiceQuestions = function(limit) {
   for (var i = 0; i < limit; i++) {
     var word = words[i].term,
         sentence = self._getSentenceWithWord(word),
-        options = [];
-    sentence = sentence.replace(word, '_____');
-    answerIndex = Math.floor(Math.random() * 4);
+        sentence = sentence.replace(word, '_____'),
+        options = [],
+        answerIndex = Math.floor(Math.random() * 4);
+
     while (options.length < 4) {
       if (options.length == answerIndex) {
         options.push(word);
@@ -35,15 +36,36 @@ QuestionGenerator.prototype.getMultipleChoiceQuestions = function(limit) {
   return questions;
 };
 
+QuestionGenerator.prototype.getTrueFalseQuestions = function(limit) {
+  var self = this,
+      words = this._getImportantWords(),
+      questions = [];
+  for (var i = 0; i < limit; i++) {
+    var word = words[Math.floor(Math.random() * words.length)].term,
+        sentence = self._getSentenceWithWord(word),
+        options = ['True', 'False'],
+        answerIndex = Math.floor(Math.random() * 2);
+    if (answerIndex === 1) {
+      var option = word;
+      while (option === word) {
+        option = words[Math.floor(Math.random() * words.length)].term;
+      }
+      sentence = sentence.replace(word, option);
+    }
+    questions.push(new Question(sentence, options, answerIndex));
+  }
+  return questions;
+};
+
 QuestionGenerator.prototype._getSentenceWithWord = function(word) {
   var sentences = this.lessonContent.split(QuestionGenerator.SENTENCE_DELIMITERS),
       options = [];
   sentences.forEach(function(sentence) {
-    if (sentence.includes(word)) {
+    if (sentence.includes(word) && !QuestionGenerator.WORD_BLACKLIST.some(function(w) { return sentence.includes(w) })) {
       options.push(sentence);
     }
   });
-  return options[Math.floor(Math.random() * options.length)];
+  return options[Math.floor(Math.random() * options.length)].trim();
 };
 
 QuestionGenerator.prototype._getImportantWords = function() {
