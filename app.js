@@ -4,9 +4,11 @@ var express = require('express'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
+    QuizGenerator = require('./models/QuizGenerator'),
     LessonGenerator = require('./models/LessonGenerator'),
     app = express();
 
+process.on('unhandledRejection', console.log.bind(console))
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -39,40 +41,14 @@ app.get('/lesson', function(req, res, next) {
 });
 
 app.get('/quiz', function(req, res, next) {
-  var questions = [{
-    question: "Linear algebra is the branch of _______ concerning vector spaces and linear mappings between such spaces.",
-    options: ["Mathematics", "History", "Art", "Physics"]
-  }, {
-    question: "Linear algebra is the branch of _______ concerning vector spaces and linear mappings between such spaces.",
-    options: ["Mathematics", "History", "Art", "Physics"]
-  }, {
-    question: "Linear algebra is the branch of _______ concerning vector spaces and linear mappings between such spaces.",
-    options: ["Mathematics", "History", "Art", "Physics"]
-  }, {
-    question: "Linear algebra is the branch of _______ concerning vector spaces and linear mappings between such spaces.",
-    options: ["Mathematics", "History", "Art", "Physics"]
-  }, {
-    question: "Linear algebra is the branch of _______ concerning vector spaces and linear mappings between such spaces.",
-    options: ["Mathematics", "History", "Art", "Physics"]
-  }, {
-    question: "The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space.",
-    options: ["True", "False"]
-  }, {
-    question: "The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space.",
-    options: ["True", "False"]
-  }, {
-    question: "The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space.",
-    options: ["True", "False"]
-  }, {
-    question: "The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space.",
-    options: ["True", "False"]
-  }, {
-    question: "The set of points with coordinates that satisfy a linear equation forms a hyperplane in an n-dimensional space.",
-    options: ["True", "False"]
-  }];
-  res.render('quiz', {
-    quizTitle: req.query.q + ' Quiz',
-    questions: questions
+  var q = req.query.q;
+  new LessonGenerator(q).getText().then(content => {
+    var qg = new QuizGenerator(q, content),
+        quiz = qg.getQuiz();
+    res.render('quiz', {
+      quizTitle: quiz.title,
+      questions: quiz.questions
+    });
   });
 });
 

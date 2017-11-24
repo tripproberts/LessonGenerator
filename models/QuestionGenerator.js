@@ -17,7 +17,7 @@ QuestionGenerator.prototype.getMultipleChoiceQuestions = function(limit) {
   for (var i = 0; i < limit; i++) {
     var word = words[i].term,
         sentence = self._getSentenceWithWord(word),
-        sentence = sentence.replace(word, '_____'),
+        sentence = sentence.replace(word, '________'),
         options = [],
         answerIndex = Math.floor(Math.random() * 4);
 
@@ -41,7 +41,7 @@ QuestionGenerator.prototype.getTrueFalseQuestions = function(limit) {
       words = this._getImportantWords(),
       questions = [];
   for (var i = 0; i < limit; i++) {
-    var word = words[Math.floor(Math.random() * words.length)].term,
+    var word = words[Math.floor(Math.random() * 10)].term,
         sentence = self._getSentenceWithWord(word),
         options = ['True', 'False'],
         answerIndex = Math.floor(Math.random() * 2);
@@ -65,7 +65,7 @@ QuestionGenerator.prototype._getSentenceWithWord = function(word) {
       options.push(sentence);
     }
   });
-  return options[Math.floor(Math.random() * options.length)].trim();
+  return options[Math.floor(Math.random() * options.length)].trim() + '.';
 };
 
 QuestionGenerator.prototype._getImportantWords = function() {
